@@ -1,4 +1,4 @@
-﻿	#include "Fraction.h"
+	#include "Fraction.h"
 	bool Fraction::check() {
 		if (denominator == 0)
 			return false;
@@ -51,19 +51,24 @@
 	Fraction& Fraction::operator++()
 	{
 		numerator += denominator;
+		simplify();
 		return *this;
 	}
+
 	const Fraction Fraction::operator++(int a)
 	{
-		Fraction backup(*this); 
+		Fraction backup(*this);
 		++(*this);
 		return backup;
 	}
+
 	Fraction& Fraction::operator--()
 	{
 		numerator -= denominator;
+		simplify();
 		return *this;
 	}
+
 	const Fraction Fraction::operator--(int a)
 	{
 		Fraction backup(*this);
@@ -71,36 +76,52 @@
 		return backup;
 	}
 	Fraction operator+(const Fraction& a, const Fraction& b) {
-		return Fraction(a.numerator * b.denominator + b.numerator * a.denominator,
+		Fraction result(a.numerator * b.denominator + b.numerator * a.denominator,
 			a.denominator * b.denominator);
+		result.simplify();
+		return result;
 	}
+
 	Fraction operator-(const Fraction& a, const Fraction& b) {
-		return Fraction(a.numerator * b.denominator - b.numerator * a.denominator,
+		Fraction result(a.numerator * b.denominator - b.numerator * a.denominator,
 			a.denominator * b.denominator);
+		result.simplify();
+		return result;
 	}
+
 	Fraction operator*(const Fraction& a, const Fraction& b) {
 		Fraction result(a.numerator * b.numerator, a.denominator * b.denominator);
 		result.simplify();
 		return result;
 	}
+
 	Fraction operator/(const Fraction& a, const Fraction& b) {
-		return Fraction(a.numerator * b.denominator, a.denominator * b.numerator);
+		Fraction result(a.numerator * b.denominator, a.denominator * b.numerator);
+		result.simplify();
+		return result;
 	}
+
 	bool operator==(const Fraction& a, const Fraction& b) {
 		Fraction fa = a, fb = b;
 		fa.simplify();
 		fb.simplify();
 		return fa.numerator == fb.numerator && fa.denominator == fb.denominator;
 	}
+
 	bool operator!=(const Fraction& a, const Fraction& b) {
-		return !(a == b);
+		Fraction fa = a, fb = b;
+		fa.simplify();
+		fb.simplify();
+		return !(fa == fb);
 	}
+
 	bool operator<(const Fraction& a, const Fraction& b) {
 		Fraction fa = a, fb = b;
 		fa.simplify();
 		fb.simplify();
 		return fa.numerator * fb.denominator < fb.numerator * fa.denominator;
 	}
+
 	bool operator>(const Fraction& a, const Fraction& b) {
 		Fraction fa = a, fb = b;
 		fa.simplify();
